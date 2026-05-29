@@ -1,0 +1,6 @@
+[submodule "Natives/external/AFNetworking"]
+	path = Natives/external/AFNetworking
+	url = https://github.com/AFNetworking/AFNetworking.git
+[submodule "Natives/external/fishhook"]
+	path = Natives/external/fishhook
+	url = https://github.com/facebook/fishhook.git
