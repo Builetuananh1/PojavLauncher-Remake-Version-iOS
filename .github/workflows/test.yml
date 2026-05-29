@@ -6,7 +6,6 @@ on:
 jobs:
   setup-submodules:
     runs-on: ubuntu-latest
-    
     permissions:
       contents: write
 
@@ -14,20 +13,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup and Commit Submodules
+      - name: Setup Core Submodules
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          rm -rf Natives/external/AFNetworking
-          rm -rf Natives/external/fishhook
-          rm -rf Natives/external/DayNightSwitch
+          echo "Dọn dẹp liên kết cũ (nếu có)..."
+          git rm -rf Natives/external/AFNetworking || true
+          git rm -rf Natives/external/fishhook || true
+          rm -f .gitmodules
+          rm -rf .git/modules/Natives/external
           
           mkdir -p Natives/external
           
-          git submodule add -f https://github.com/AFNetworking/AFNetworking.git Natives/external/AFNetworking
-          git submodule add -f https://github.com/facebook/fishhook.git Natives/external/fishhook
-          git submodule add -f https://github.com/patsym/DayNightSwitch.git Natives/external/DayNightSwitch
+          echo "Thiết lập Submodule mới..."
+          git submodule add https://github.com/AFNetworking/AFNetworking.git Natives/external/AFNetworking
+          git submodule add https://github.com/facebook/fishhook.git Natives/external/fishhook
           
-          git commit -m "chore: Thêm liên kết Submodule AFNetworking, fishhook, DayNightSwitch" || echo "Submodule đã tồn tại, không có gì thay đổi."
+          git commit -m "chore: Cập nhật liên kết Submodule AFNetworking và fishhook" || echo "Không có gì thay đổi."
           git push
