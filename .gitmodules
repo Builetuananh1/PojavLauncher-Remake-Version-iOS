@@ -4,3 +4,6 @@
 [submodule "Natives/external/fishhook"]
 	path = Natives/external/fishhook
 	url = https://github.com/facebook/fishhook.git
+[submodule "Natives/external/DBNumberedSlider"]
+	path = Natives/external/DBNumberedSlider
+	url = https://github.com/khanhduytran0/DBNumberedSlider.git
