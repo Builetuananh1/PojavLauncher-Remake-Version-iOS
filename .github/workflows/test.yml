@@ -22,15 +22,18 @@ jobs:
           git rm -rf Natives/external/AFNetworking || true
           git rm -rf Natives/external/fishhook || true
           git rm -rf Natives/external/DBNumberedSlider || true
-          rm -f .gitmodules
+          
+          # Xóa đúng chuẩn Git và tạo lại file trống để fix lỗi "not in working tree"
+          git rm -f .gitmodules || true
           rm -rf .git/modules/Natives/external
+          touch .gitmodules
           
           mkdir -p Natives/external
           
           echo "Thêm Submodule bắt buộc..."
-          git submodule add https://github.com/AFNetworking/AFNetworking.git Natives/external/AFNetworking
-          git submodule add https://github.com/facebook/fishhook.git Natives/external/fishhook
-          git submodule add https://github.com/khanhduytran0/DBNumberedSlider.git Natives/external/DBNumberedSlider
+          git submodule add --force https://github.com/AFNetworking/AFNetworking.git Natives/external/AFNetworking
+          git submodule add --force https://github.com/facebook/fishhook.git Natives/external/fishhook
+          git submodule add --force https://github.com/khanhduytran0/DBNumberedSlider.git Natives/external/DBNumberedSlider
           
-          git commit -m "chore: Bổ sung submodule DBNumberedSlider cùng AFNetworking và fishhook" || echo "Không có gì thay đổi."
+          git commit -m "chore: Bổ sung submodule DBNumberedSlider, AFNetworking, fishhook" || echo "Không có thay đổi."
           git push
