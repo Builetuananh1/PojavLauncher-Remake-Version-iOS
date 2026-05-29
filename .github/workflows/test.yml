@@ -1,13 +1,11 @@
 name: Populate External Source Code
 
 on:
-  workflow_dispatch: # Chỉ chạy khi bạn tự bấm nút thủ công
+  workflow_dispatch:
 
 jobs:
   download-and-commit:
     runs-on: ubuntu-latest
-    
-    # Cấp quyền cho Action được phép ghi (commit) code mới vào Repo của bạn
     permissions:
       contents: write 
 
@@ -15,28 +13,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: recursive # Bước quan trọng: Lấy toàn bộ code của các thư viện về máy chủ ảo
+          submodules: recursive
 
       - name: Convert Submodules to Real Folders
         run: |
-          echo "Bắt đầu xóa liên kết Git của Submodule..."
-          
           rm -f .gitmodules
-          
-          git rm --cached -r external/ || true
-          
-          find external -name ".git" -type d -exec rm -rf {} +
-          find external -name ".git" -type f -exec rm -rf {} +
-          
-          echo "(1/2)%"
+          git rm --cached -r Natives/external/ || true
+          find Natives/external -name ".git" -type d -exec rm -rf {} +
+          find Natives/external -name ".git" -type f -exec rm -rf {} +
 
       - name: Commit and Push to Repository
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          git add external/
+          git add Natives/external/
           git add .gitmodules || true
-          
-          git commit -m "chore: Chuyển đổi submodule thành mã nguồn vật lý tại external/" || echo "Mã nguồn đã tồn tại, không có gì mới để commit."
+          git commit -m "chore: Chuyển đổi submodule thành mã nguồn vật lý tại Natives/external/" || true
           git push
