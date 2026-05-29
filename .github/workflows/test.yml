@@ -18,17 +18,19 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          echo "Dọn dẹp liên kết cũ (nếu có)..."
+          echo "Dọn dẹp liên kết cũ..."
           git rm -rf Natives/external/AFNetworking || true
           git rm -rf Natives/external/fishhook || true
+          git rm -rf Natives/external/DBNumberedSlider || true
           rm -f .gitmodules
           rm -rf .git/modules/Natives/external
           
           mkdir -p Natives/external
           
-          echo "Thiết lập Submodule mới..."
+          echo "Thêm Submodule bắt buộc..."
           git submodule add https://github.com/AFNetworking/AFNetworking.git Natives/external/AFNetworking
           git submodule add https://github.com/facebook/fishhook.git Natives/external/fishhook
+          git submodule add https://github.com/khanhduytran0/DBNumberedSlider.git Natives/external/DBNumberedSlider
           
-          git commit -m "chore: Cập nhật liên kết Submodule AFNetworking và fishhook" || echo "Không có gì thay đổi."
+          git commit -m "chore: Bổ sung submodule DBNumberedSlider cùng AFNetworking và fishhook" || echo "Không có gì thay đổi."
           git push
