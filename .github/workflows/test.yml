@@ -1,32 +1,33 @@
-name: Populate External Source Code
+name: Add External Submodules
 
 on:
   workflow_dispatch:
 
 jobs:
-  download-and-commit:
+  setup-submodules:
     runs-on: ubuntu-latest
+    
     permissions:
-      contents: write 
+      contents: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Force fetch submodules
-        run: |
-          git submodule update --init --recursive --force
-
-      - name: Convert Submodules to Real Folders
-        run: |
-          rm -f .gitmodules
-          git rm --cached -r Natives/external/ || true
-          find Natives/external -name ".git" -exec rm -rf {} +
-
-      - name: Commit and Push to Repository
+      - name: Setup and Commit Submodules
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add Natives/external/ -f
-          git commit -m "chore: Ép thêm mã nguồn vật lý tại Natives/external/" || true
+          
+          rm -rf Natives/external/AFNetworking
+          rm -rf Natives/external/fishhook
+          rm -rf Natives/external/DayNightSwitch
+          
+          mkdir -p Natives/external
+          
+          git submodule add -f https://github.com/AFNetworking/AFNetworking.git Natives/external/AFNetworking
+          git submodule add -f https://github.com/facebook/fishhook.git Natives/external/fishhook
+          git submodule add -f https://github.com/patsym/DayNightSwitch.git Natives/external/DayNightSwitch
+          
+          git commit -m "chore: Thêm liên kết Submodule AFNetworking, fishhook, DayNightSwitch" || echo "Submodule đã tồn tại, không có gì thay đổi."
           git push
