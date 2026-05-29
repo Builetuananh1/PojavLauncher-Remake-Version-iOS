@@ -12,21 +12,21 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
+
+      - name: Force fetch submodules
+        run: |
+          git submodule update --init --recursive --force
 
       - name: Convert Submodules to Real Folders
         run: |
           rm -f .gitmodules
           git rm --cached -r Natives/external/ || true
-          find Natives/external -name ".git" -type d -exec rm -rf {} +
-          find Natives/external -name ".git" -type f -exec rm -rf {} +
+          find Natives/external -name ".git" -exec rm -rf {} +
 
       - name: Commit and Push to Repository
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add Natives/external/
-          git add .gitmodules || true
-          git commit -m "chore: Chuyển đổi submodule thành mã nguồn vật lý tại Natives/external/" || true
+          git add Natives/external/ -f
+          git commit -m "chore: Ép thêm mã nguồn vật lý tại Natives/external/" || true
           git push
