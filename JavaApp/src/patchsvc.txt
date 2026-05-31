@@ -1,0 +1,2 @@
+Agent-Class: com.builetuananh.patchsvc.PatchSVC
+Premain-Class: com.builetuananh.patchsvc.PatchSVC
